@@ -1,0 +1,23 @@
+'use client';
+import React from 'react';
+import style from './style.module.scss';
+import { servicesData } from '../constants/servicesData';
+  
+const Services = () => {
+  return (
+    <div className={style.services}>
+      <h1>Наши Услуги</h1>
+      <div className={style.servicesList}>
+        {servicesData.map((service, index) => (
+          <div key={service.id} className={style.serviceItem}>
+            <h2>{service.title}</h2>
+            <p>{service.description}</p>
+            <span style={{color: 'green', fontWeight: '600'}}>{service.price} {"Р"}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Services;
