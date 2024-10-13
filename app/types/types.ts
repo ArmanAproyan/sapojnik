@@ -11,3 +11,15 @@ export interface Ilink {
     label: string
 };
 
+export interface IreviewData {
+    id: number,
+    email: string,
+    review: string
+};
+
+
+export interface IreviewDataProps {
+    reviewData: IreviewData[],
+    setReviewData: (arg:any) => void
+}
+

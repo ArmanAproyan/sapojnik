@@ -18,7 +18,6 @@ const Footer = () => {
                 </div>
             </div>
             <div className={styles.bottom}>
-                <p>&copy; 2024 Ваша Компания. Все права защищены.</p>
             </div>
         </footer>
     );

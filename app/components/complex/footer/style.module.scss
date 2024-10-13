@@ -3,6 +3,13 @@
     color: white;
     padding: 20px 0;
     text-align: center;
+    margin-top: 100px;
+    width: 100%;
+
+    // Сделаем футер адаптивным
+    @media (max-width: 768px) {
+        padding: 15px 0; // Уменьшаем отступы на мобильных устройствах
+    }
 }
 
 .container {
@@ -10,24 +17,49 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
+
+    // На мобильных устройствах делаем блоки вертикальными
+    @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: center; // Центрируем элементы
+    }
 }
 
-.links a {
-    margin: 0 15px;
-    color: white;
-    text-decoration: none;
+.links {
+    display: flex;
+    flex-wrap: wrap; // Позволяем ссылкам обтекать
+    justify-content: center; // Центрируем ссылки
+
+    a {
+        margin: 0 15px;
+        color: white;
+        text-decoration: none;
+
+        @media (max-width: 768px) {
+            margin: 5px 10px; // Уменьшаем отступы между ссылками
+        }
+    }
 }
 
 .social {
     display: flex;
-}
+    justify-content: center; // Центрируем иконки
 
-.icon {
-    margin: 0 10px;
-    color: white;
-    text-decoration: none;
+    .icon {
+        margin: 0 10px;
+        color: white;
+        text-decoration: none;
+
+        @media (max-width: 768px) {
+            margin: 5px; // Уменьшаем отступы на мобильных
+        }
+    }
 }
 
 .bottom {
     margin-top: 10px;
+
+    @media (max-width: 768px) {
+        margin-top: 5px; // Уменьшаем отступ на мобильных
+    }
 }
