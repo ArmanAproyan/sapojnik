@@ -2,23 +2,66 @@
 import style from './style.module.scss';
 import axios from 'axios';
 import { useState } from 'react';
+import { NextResponse } from 'next/server';
+import { Ierror } from '@/app/types/types';
+
 
 interface ReviewsProps {
     reviewData?: any[];
     setReviewData: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
+
+export function middleware(request: any) {
+    const fdprocessedid = generateUniqueId();
+
+    request.headers.set('X-FD-Processed-ID', fdprocessedid);
+
+    return NextResponse.next();
+}
+
+function generateUniqueId() {
+    return 'id-' + Math.random().toString(36).substr(2, 9);
+}
+
+
 const Reviews: React.FC<ReviewsProps> = ({setReviewData }) => {
     const [email, setEmail] = useState<string>('');
     const [review, setReview] = useState<string>('');
-    const [errorMessage, setErrorMessage] = useState<string>('');
+    const [errorMessage, setErrorMessage] = useState<Ierror>({
+        email: '',
+        review: ''
+    });
+
+
+    const handleChangeReview = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setReview(e.target.value)
+    
+    };
+
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (email.length >= 30) {
-            setErrorMessage('некоректный email');
+            setErrorMessage((prevState) => {
+                return {
+                    ...prevState,
+                    email: 'некоректный email'
+                }
+            });
             return;
+        }
+
+
+        if(review.length >= 250) {
+            setErrorMessage((prevState) => {
+                return {
+                    ...prevState,
+                    review: 'Очень много текста'
+                }
+            })
+            return
         }
 
         const request = { email, review }; 
@@ -28,7 +71,7 @@ const Reviews: React.FC<ReviewsProps> = ({setReviewData }) => {
                 ...prevState,
                 { email, review }
             ]);
-            setErrorMessage('');
+          setErrorMessage({email: '', review:''});
         } catch (error) {
             console.log('Отзыв не отправлен, причина: ' + error);
         } finally {
@@ -52,7 +95,7 @@ const Reviews: React.FC<ReviewsProps> = ({setReviewData }) => {
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <small id="emailHelp" className={style.error_text}>
-                    {errorMessage}
+                    {errorMessage.email}
                 </small>
             </div>
             <div className={style.form_group}>
@@ -63,9 +106,13 @@ const Reviews: React.FC<ReviewsProps> = ({setReviewData }) => {
                     id="exampleInputReview1"
                     placeholder="Напишите ваш отзыв"
                     value={review}
-                    onChange={(e) => setReview(e.target.value)}
+                    onChange={handleChangeReview}
                 />
             </div>
+            <small id="reviewlHelp" className={style.error_text}>
+                    {errorMessage.review}
+                </small>
+                <br />
             <button type="submit" className={style.btn_primary}>
                 Submit
             </button>

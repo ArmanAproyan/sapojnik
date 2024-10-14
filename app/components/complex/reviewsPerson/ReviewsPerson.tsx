@@ -40,7 +40,7 @@ const ReviewsPerson:React.FC<IreviewDataProps> = ({reviewData,setReviewData}) =>
                 {loading && <h1>Loading...</h1>}
                 {reviewData && reviewData.map((val) => {
                     return (
-                        <div className={style.review}>
+                        <div key={val.id} className={style.review}>
                             <div className={style.user_info}>
                                 <div className={style.user_image}><RiUser3Fill/></div>
                                 <div className={style.user_email}>{val.email}</div>

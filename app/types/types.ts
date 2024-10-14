@@ -21,5 +21,9 @@ export interface IreviewData {
 export interface IreviewDataProps {
     reviewData: IreviewData[],
     setReviewData: (arg:any) => void
-}
+};
 
+export interface Ierror {
+    email: string,
+    review: string
+};
