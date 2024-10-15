@@ -16,17 +16,17 @@ export async function GET() {
 export async function POST(request: NextRequest) {
     try {
         const data = await request.json();
-        const { email, review } = data;
+        const { email, review, sendTime } = data;
 
         if (!email || !review) {
             return NextResponse.json({ success: false, message: "Email и отзыв обязательны." }, { status: 400 });
         }
 
         const stmt = db.prepare(`
-            INSERT INTO reviews (email, review) VALUES (?, ?)
+            INSERT INTO reviews (email, review, sendTime) VALUES (?, ?, ?)
         `);
         
-        stmt.run(email, review);
+        stmt.run(email, review, sendTime);
 
         return NextResponse.json({success: true, message: "Отзыв успешно добавлен." }, { status: 201 });
     } catch (error: any) {

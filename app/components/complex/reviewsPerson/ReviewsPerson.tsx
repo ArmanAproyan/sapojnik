@@ -44,6 +44,7 @@ const ReviewsPerson:React.FC<IreviewDataProps> = ({reviewData,setReviewData}) =>
                             <div className={style.user_info}>
                                 <div className={style.user_image}><RiUser3Fill/></div>
                                 <div className={style.user_email}>{val.email}</div>
+                                <div className={style.time}>{val.sendTime}</div>
                             </div>
                             <div className={style.user_review}>
                                 <p>{val.review}</p>

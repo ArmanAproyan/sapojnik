@@ -14,7 +14,8 @@ export interface Ilink {
 export interface IreviewData {
     id: number,
     email: string,
-    review: string
+    review: string,
+    sendTime: string
 };
 
 

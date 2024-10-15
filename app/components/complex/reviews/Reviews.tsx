@@ -25,23 +25,34 @@ function generateUniqueId() {
 }
 
 
-const Reviews: React.FC<ReviewsProps> = ({setReviewData }) => {
+const Reviews: React.FC<ReviewsProps> = ({setReviewData}) => {
     const [email, setEmail] = useState<string>('');
     const [review, setReview] = useState<string>('');
     const [errorMessage, setErrorMessage] = useState<Ierror>({
         email: '',
         review: ''
-    });
+        });
 
 
     const handleChangeReview = (e: React.ChangeEvent<HTMLInputElement>) => {
         setReview(e.target.value)
-    
     };
 
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const data = new Date();
+        const day = data.getDate();          
+        const month = data.getMonth() + 1;    
+        const hours = data.getHours();        
+        let minutes: number | string = data.getMinutes();    
+        if(minutes < 10) {
+            const prevMinutesData = minutes
+            minutes = '0' + prevMinutesData
+        }
+        
+        const sendTimeData = `${day}.${month}.${hours}:${minutes}`;
+        
 
         if (email.length >= 30) {
             setErrorMessage((prevState) => {
@@ -64,12 +75,12 @@ const Reviews: React.FC<ReviewsProps> = ({setReviewData }) => {
             return
         }
 
-        const request = { email, review }; 
+        const request = { email, review, sendTime: sendTimeData }; 
         try {
             await axios.post('/api/reviews', request);
             setReviewData((prevState) => [
                 ...prevState,
-                { email, review }
+                { email, review, sendTime: sendTimeData }
             ]);
           setErrorMessage({email: '', review:''});
         } catch (error) {
