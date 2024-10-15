@@ -16,4 +16,5 @@ db.prepare(`
 
 
 
-module.exports = db;
+// module.exports = db;
+export default db

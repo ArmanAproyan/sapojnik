@@ -54,7 +54,7 @@ const Reviews: React.FC<ReviewsProps> = ({setReviewData }) => {
         }
 
 
-        if(review.length >= 250) {
+        if(review.length >= 550) {
             setErrorMessage((prevState) => {
                 return {
                     ...prevState,

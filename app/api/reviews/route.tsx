@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-const db = require('../../database/init'); 
+import db from '../../database/init'; 
+
 
 export async function GET() {
     try {
@@ -17,7 +18,6 @@ export async function POST(request: NextRequest) {
         const data = await request.json();
         const { email, review } = data;
 
-        // Проверка входных данных
         if (!email || !review) {
             return NextResponse.json({ success: false, message: "Email и отзыв обязательны." }, { status: 400 });
         }

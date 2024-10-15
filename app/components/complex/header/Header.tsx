@@ -6,7 +6,7 @@ import { Ilink } from '@/app/types/types';
 
 const links: Ilink[] = [
   { href: '/', label: 'Главная' },
-  { href: '/about', label: 'О нас' },
+  { href: '/about', label: 'Знания о нас' },
   { href: '/services', label: 'Услуги' }
   // { href: '/Reviews', label: 'Отзывы' },
 ];
