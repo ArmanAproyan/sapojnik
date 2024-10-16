@@ -41,9 +41,9 @@ const About = () => {
             качественный ремонт обуви — это не только наша работа, но и наше призвание!
           </p>
           <h2 className={style.subTitle}>Контакты:</h2>
-          <p className={style.description}>Телефон: +7 (123) 456-78-90</p>
-          <p className={style.description}>Email: info@shoerepair.com</p>
-          <p className={style.description}>Адрес: ул. Примерная, 1, Москва</p>
+          <p className={style.description}>Телефон: +7 (911) 276-04-14</p>
+          <p className={style.description}>Email: vahagstepanyan@mail.ru</p>
+          <p className={style.description}>Адрес: ул. Примерная, 1, Санкт Петербург</p>
         </div>
       );
     };

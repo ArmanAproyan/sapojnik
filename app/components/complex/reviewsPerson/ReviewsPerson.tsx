@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { IreviewDataProps } from '@/app/types/types';
 import { RiUser3Fill } from "react-icons/ri";
+import SkeletonReview from '../../simple/reviewSkeleton/ReviewSkeleton';
 
 
 
@@ -37,7 +38,7 @@ const ReviewsPerson:React.FC<IreviewDataProps> = ({reviewData,setReviewData}) =>
             </div>
         <div className={style.reviews}>
             <div className={style.review_block}>
-                {loading && <h1>Loading...</h1>}
+                {loading && <SkeletonReview/>}
                 {reviewData && reviewData.map((val) => {
                     return (
                         <div key={val.id} className={style.review}>

@@ -1,5 +1,6 @@
 import style from './style.module.scss';
 import Image from 'next/image';
+import IsOpen from '../../simple/isOpen/IsOpen';
 import logo from '../../../assets/logo/sapojnikLogo.png'
 
 const MainPage = () => {
@@ -7,11 +8,12 @@ const MainPage = () => {
     <div className={style.main_page}>
       <div className={style.wrapper}>
         <div className={style.text}>
-          <h1>Добро пожаловать в "Мастерская обуви"!</h1>
+          <h1>Добро пожаловать в "Мастерская Новая Походка"!</h1>
           <br />
           <h3>Ваш надежный мастер по ремонту и изготовлению обуви!</h3>
           <br />
-          <span>В нашей мастерской мы понимаем, что качественная обувь — это залог вашего комфорта и уверенности. Мы предлагаем широкий спектр услуг, чтобы ваша обувь всегда выглядела и ощущалась прекрасно.</span>
+          <span>Мастерская Новая Походка открыта с <b>09:00</b> до <b>19:00</b> и предлагает широкий спектр услуг по ремонту и уходу за обувью.</span>
+          {<IsOpen/>}
           <div className={style.button_block}>
             <div className={style.button}>Подробнее</div>
           </div>
