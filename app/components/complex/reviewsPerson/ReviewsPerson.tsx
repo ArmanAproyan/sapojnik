@@ -15,6 +15,8 @@ const ReviewsPerson:React.FC<IreviewDataProps> = ({reviewData,setReviewData}) =>
 
     useEffect(() => {
         const getData = async () => {
+            console.log("Выполняется запрос к базе данных для получения отзывов.");
+
             try {
                 axios.get('/api/reviews')
                     .then((response) => {
