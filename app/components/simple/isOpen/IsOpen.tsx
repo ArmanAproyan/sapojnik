@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from "react";
 const IsOpen = () => {
-    const [isOpenShop, setIsOpenShop] = useState<boolean>(false);
+    const [isOpenShop, setIsOpenShop] = useState<boolean>(true);
 
     const showIsOpen = () => {
         const data = new Date();

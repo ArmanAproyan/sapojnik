@@ -12,12 +12,10 @@ db.prepare(`
 `).run();
 
 
-// db.prepare('DROP TABLE reviews').run();
 
-// db.prepare(`
-//     DELETE FROM reviews;
-// `).run();
 
 
 // module.exports = db;
 export default db
+
+
