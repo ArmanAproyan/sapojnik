@@ -35,7 +35,6 @@ const Reviews: React.FC<ReviewsProps> = ({ setReviewData }) => {
                     ...prevState,
                     value,
                 ]);
-                // Очищаем поля формы после успешной отправки
                 resetForm();
             } else {
                 console.error('Ошибка:', response.data.message);
