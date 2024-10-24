@@ -51,10 +51,17 @@ const Reviews: React.FC<ReviewsProps> = ({ setReviewData }) => {
             return;
         }
 
+        if(review.trim() == '') {
+            setErrorMessage((prevState) => ({
+                ...prevState,
+                review: 'Етот поле не модет бить путим'
+            }))
+            return
+        }
+
         const request = { email, review, sendTime: sendTimeData }; 
         try {
             const response = await axios.post('/api/reviews', request);
-            // Убедитесь, что сервер возвращает корректный ответ
             if (response.data.success) {
                 setReviewData((prevState) => [
                     ...prevState,
