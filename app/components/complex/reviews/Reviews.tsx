@@ -1,121 +1,86 @@
 "use client";
 import style from './style.module.scss';
 import axios from 'axios';
-import { useState } from 'react';
-import { Ierror } from '@/app/types/types';
+import React from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 interface ReviewsProps {
     reviewData?: any[];
     setReviewData: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
-const Reviews: React.FC<ReviewsProps> = ({ setReviewData }) => {
-    const [email, setEmail] = useState<string>('');
-    const [review, setReview] = useState<string>('');
-    const [errorMessage, setErrorMessage] = useState<Ierror>({
-        email: '',
-        review: ''
-    });
+interface Iresponse {
+    email: string;
+    review: string;
+    sendTime?: string;
+}
 
-    const handleChangeReview = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setReview(e.target.value);
+const Reviews: React.FC<ReviewsProps> = ({ setReviewData }) => {
+    const getTime = () => {
+        const data = new Date();
+        const day = data.getDate();
+        const month = data.getMonth() + 1;
+        const hours = data.getHours();
+        let minutes: number | string = data.getMinutes();
+        return `${day}.${month}.${hours}:${minutes}`;
     };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const data = new Date();
-        const day = data.getDate();          
-        const month = data.getMonth() + 1;    
-        const hours = data.getHours();        
-        let minutes: number | string = data.getMinutes();    
-        if (minutes < 10) {
-            minutes = '0' + minutes;
-        }
-        
-        const sendTimeData = `${day}.${month}.${hours}:${minutes}`;
-
-        // Проверка на некорректные данные
-        if (email.length >= 30) {
-            setErrorMessage((prevState) => ({
-                ...prevState,
-                email: 'некоректный email'
-            }));
-            return;
-        }
-
-        if (review.length >= 550) {
-            setErrorMessage((prevState) => ({
-                ...prevState,
-                review: 'Очень много текста'
-            }));
-            return;
-        }
-
-        if(review.trim() == '') {
-            setErrorMessage((prevState) => ({
-                ...prevState,
-                review: 'Етот поле не модет бить путим'
-            }))
-            return
-        }
-
-        const request = { email, review, sendTime: sendTimeData }; 
+    const handleSubmit = async (value: Iresponse, { resetForm }: any) => {
+        value.sendTime = getTime();
         try {
-            const response = await axios.post('/api/reviews', request);
+            const response = await axios.post('/api/reviews', value);
             if (response.data.success) {
-                setReviewData((prevState) => [
+                setReviewData((prevState: any) => [
                     ...prevState,
-                    { email, review, sendTime: sendTimeData }
+                    value,
                 ]);
-                setErrorMessage({ email: '', review: '' });
+                // Очищаем поля формы после успешной отправки
+                resetForm();
             } else {
                 console.error('Ошибка:', response.data.message);
             }
         } catch (error: any) {
             console.error('Отзыв не отправлен, причина:', error.response?.data || error.message);
-        } finally {
-            setEmail('');
-            setReview('');
         }
     };
 
+    const validationSchema = Yup.object().shape({
+        email: Yup.string()
+            .required('Обязательное поле')
+            .email('Введите правильный email'),
+        review: Yup.string()
+            .required('Обязательное поле')
+            .max(200, 'Напишите не больше 200 символов')
+            .min(10, 'Напишите минимум 10 символов'),
+    });
+
     return (
-        <form onSubmit={handleSubmit} className={style.form}>
-            <span>Отзивы</span>
-            <div className={style.form_group}>
-                <label htmlFor="exampleInputEmail1">Email address</label>
-                <input
-                    type="email"
-                    className={style.input}
-                    id="exampleInputEmail1"
-                    aria-describedby="emailHelp"
-                    placeholder="Enter email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <small id="emailHelp" className={style.error_text}>
-                    {errorMessage.email}
-                </small>
-            </div>
-            <div className={style.form_group}>
-                <label htmlFor="exampleInputReview1">Отзыв</label>
-                <input
-                    type="text"
-                    className={style.input_review}
-                    id="exampleInputReview1"
-                    placeholder="Напишите ваш отзыв"
-                    value={review}
-                    onChange={handleChangeReview}
-                />
-            </div>
-            <small id="reviewHelp" className={style.error_text}>
-                {errorMessage.review}
-            </small>
-            <br />
-            <button type="submit" className={style.btn_primary}>
-                Submit
-            </button>
-        </form>
+        <div className={style.form}>
+            <Formik
+                initialValues={{ email: '', review: '' }}
+                validationSchema={validationSchema}
+                onSubmit={handleSubmit} 
+            >
+                {({ resetForm }) => (
+                    <Form>
+                        <div className={style.form_group}>
+                            <label htmlFor="email">Email</label>
+                            <Field type='email' name='email' placeholder='email' />
+                            <ErrorMessage name="email" component="div" className={style.error} />
+                        </div>
+
+                        <div className={style.form_group}>
+                            <label htmlFor="review">Отзыв:</label>
+                            <Field as="textarea" name="review" placeholder='Напишите ваш отзыв' className={style.input_review} />
+                            <ErrorMessage name="review" component="div" className={style.error} />
+                        </div>
+
+                        <button type='submit' className={style.btn_primary}>Отправить</button>
+                    </Form>
+                )}
+            </Formik>
+        </div>
     );
 };
 
